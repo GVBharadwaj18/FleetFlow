@@ -92,7 +92,7 @@ const InvoiceList = () => {
             cell: ({ row }) => (
                 <span className="flex items-center gap-2 font-medium">
                     <User className="w-4 h-4 text-surface-400" />
-                    {row.original.customer ? `${row.original.customer.firstName} ${row.original.customer.lastName}` : 'Unknown'}
+                    <span>🦾 Customer: {row.original.customer ? `${row.original.customer.firstName} ${row.original.customer.lastName}` : 'Unknown'}</span>
                 </span>
             )
         },
@@ -103,7 +103,7 @@ const InvoiceList = () => {
             cell: ({ row }) => (
                 <span className="flex items-center gap-2 text-surface-600 dark:text-surface-400">
                     <Car className="w-4 h-4 text-surface-400" />
-                    {row.original.vehicle?.brand} {row.original.vehicle?.model}
+                    {row.original.vehicle ? `${row.original.vehicle.brand} ${row.original.vehicle.model}${row.original.vehicle.plateNumber ? ` - ${row.original.vehicle.plateNumber}` : ''}` : 'Unknown'}
                 </span>
             )
         },
@@ -113,7 +113,7 @@ const InvoiceList = () => {
             accessorFn: (row) => row.totalPrice,
             cell: ({ row }) => (
                 <span className="font-bold text-emerald-600 dark:text-emerald-500">
-                    ${Number(row.original.totalPrice || 0).toLocaleString()}
+                    {Number(row.original.totalPrice || 0).toLocaleString()} €
                 </span>
             )
         },
