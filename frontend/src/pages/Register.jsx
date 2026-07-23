@@ -28,7 +28,8 @@ function Register() {
     setMessage("");
     setLoading(true);
     try {
-      const res = await api.post("/api/auth/register", { username, email, passwordHash, role });
+      const finalUsername = username.trim() || email.split('@')[0];
+      const res = await api.post("/api/auth/register", { username: finalUsername, email, passwordHash, role });
       const authData = { token: res.data.token, user: res.data.user };
       localStorage.setItem("auth", JSON.stringify(authData));
       login(authData);
@@ -41,10 +42,10 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex bg-surface-950 overflow-hidden">
+    <div className="min-h-screen flex bg-surface-50 dark:bg-surface-950 overflow-hidden">
 
       {/* ── Left: Brand Panel ────────────────────────────── */}
-      <div className="hidden lg:flex flex-col justify-between w-1/2 relative overflow-hidden bg-surface-1000 p-12">
+      <div className="hidden lg:flex flex-col justify-between w-1/2 relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-slate-950 p-12">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent-500/15 blur-[120px] animate-float-slow" />
           <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-brand-600/20 blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
@@ -59,7 +60,7 @@ function Register() {
             <Zap className="w-6 h-6 text-white" fill="currentColor" />
           </div>
           <div>
-            <span className="font-display font-bold text-white text-xl tracking-tight">FleetOS</span>
+            <span className="font-display font-bold text-white text-xl tracking-tight">FleetFlow</span>
             <p className="text-[10px] text-brand-300 uppercase tracking-widest font-medium">Vehicle Command Center</p>
           </div>
         </div>
@@ -106,15 +107,15 @@ function Register() {
             <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-accent-500 rounded-xl flex items-center justify-center shadow-glow-sm">
               <Zap className="w-6 h-6 text-white" fill="currentColor" />
             </div>
-            <span className="font-display font-bold text-surface-900 dark:text-white text-xl">FleetOS</span>
+            <span className="font-display font-bold text-surface-900 dark:text-white text-xl">FleetFlow</span>
           </div>
 
           <div className="mb-8">
             <h2 className="text-3xl font-display font-bold text-surface-900 dark:text-white">Create your account</h2>
-            <p className="text-surface-500 mt-2">Get started with FleetOS in seconds</p>
+            <p className="text-surface-500 mt-2">Get started with FleetFlow in seconds</p>
           </div>
 
-          <form onSubmit={handleRegister} className="space-y-5">
+          <form onSubmit={handleRegister} autoComplete="off" className="space-y-5">
             {/* Role Selector */}
             <div>
               <label className="input-label">Select Your Role</label>
@@ -143,10 +144,10 @@ function Register() {
 
             {/* Username */}
             <div>
-              <label className="input-label">Username</label>
+              <label className="input-label">Username (Optional)</label>
               <div className="relative">
                 <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
-                <input type="text" placeholder="johndoe" value={username} onChange={(e) => setUsername(e.target.value)} required className="input-modern pl-10" />
+                <input type="text" name="reg_username" autoComplete="off" placeholder="your username" value={username} onChange={(e) => setUsername(e.target.value)} className="input-modern pl-10" />
               </div>
             </div>
 
@@ -155,7 +156,7 @@ function Register() {
               <label className="input-label">Email Address</label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
-                <input type="email" placeholder="john@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="input-modern pl-10" />
+                <input type="email" name="reg_email" autoComplete="off" placeholder="your email address" value={email} onChange={(e) => setEmail(e.target.value)} required className="input-modern pl-10" />
               </div>
             </div>
 
@@ -164,7 +165,7 @@ function Register() {
               <label className="input-label">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
-                <input type={showPass ? 'text' : 'password'} placeholder="Min 8 characters" value={passwordHash} onChange={(e) => setPasswordHash(e.target.value)} required className="input-modern pl-10 pr-10" />
+                <input type={showPass ? 'text' : 'password'} name="reg_password" autoComplete="new-password" placeholder="Min 8 characters" value={passwordHash} onChange={(e) => setPasswordHash(e.target.value)} required className="input-modern pl-10 pr-10" />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300 transition-colors">
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>

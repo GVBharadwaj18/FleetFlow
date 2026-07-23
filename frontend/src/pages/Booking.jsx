@@ -119,7 +119,7 @@ const Booking = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <FIELD_LABEL icon={User}>Full Name</FIELD_LABEL>
-                  <input type="text" name="customerName" required value={formData.customerName} onChange={handleChange} className="input-modern" placeholder="John Doe" />
+                  <input type="text" name="customerName" required value={formData.customerName} onChange={handleChange} className="input-modern" placeholder="Your full name" />
                 </div>
                 <div>
                   <FIELD_LABEL icon={FileText}>Contact Number</FIELD_LABEL>

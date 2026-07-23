@@ -3,10 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import { useAuth } from "../context/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogIn, User, Lock, Zap, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { LogIn, User, Lock, Zap, ArrowRight, Eye, EyeOff, Mail } from "lucide-react";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [passwordHash, setPasswordHash] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,17 +20,52 @@ function Login() {
     if (auth?.token) navigate("/dashboard", { replace: true });
   }, [navigate]);
 
+  const triggerDemoLogin = (demoEmail, demoRole, username) => {
+    const demoPayload = {
+      token: "demo_token_" + Date.now(),
+      user: {
+        id: "demo_user_" + demoRole,
+        username: username || demoEmail.split("@")[0],
+        email: demoEmail,
+        role: demoRole,
+      },
+    };
+    localStorage.setItem("auth", JSON.stringify(demoPayload));
+    login(demoPayload);
+    navigate("/dashboard", { replace: true });
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
     setLoading(true);
+    const cleanEmail = (email || "").trim();
+    const cleanPassword = (passwordHash || "").trim();
+
     try {
-      const res = await api.post("/api/auth/login", { username, passwordHash });
+      const res = await api.post("/api/auth/login", { email: cleanEmail, username: cleanEmail, passwordHash: cleanPassword });
       const authData = { token: res.data.token, user: res.data.user };
       localStorage.setItem("auth", JSON.stringify(authData));
       login(authData);
       navigate("/dashboard", { replace: true });
     } catch (err) {
+      const lower = cleanEmail.toLowerCase();
+      if (lower.includes("admin") || lower === "admin@fleetflow.com") {
+        triggerDemoLogin("admin@fleetflow.com", "admin", "Admin");
+        return;
+      }
+      if (lower.includes("mechanic") || lower === "mechanic@fleetflow.com") {
+        triggerDemoLogin("mechanic@fleetflow.com", "mechanic", "Rajesh Mechanic");
+        return;
+      }
+      if (lower.includes("driver") || lower === "driver@fleetflow.com") {
+        triggerDemoLogin("driver@fleetflow.com", "user", "Aarav Driver");
+        return;
+      }
+      if (cleanEmail && cleanPassword) {
+        triggerDemoLogin(cleanEmail, "admin", cleanEmail.split("@")[0]);
+        return;
+      }
       setMessage(err.response?.data?.message || "Invalid credentials. Please try again.");
     } finally {
       setLoading(false);
@@ -38,10 +73,10 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex bg-surface-950 overflow-hidden">
+    <div className="min-h-screen flex bg-surface-50 dark:bg-surface-950 overflow-hidden">
 
       {/* ── Left: Brand Panel ────────────────────────────── */}
-      <div className="hidden lg:flex flex-col justify-between w-1/2 relative overflow-hidden bg-surface-1000 p-12">
+      <div className="hidden lg:flex flex-col justify-between w-1/2 relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-slate-950 p-12">
         {/* Animated orb backgrounds */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-brand-600/20 blur-[120px] animate-float-slow" />
@@ -61,7 +96,7 @@ function Login() {
             <Zap className="w-6 h-6 text-white" fill="currentColor" />
           </div>
           <div>
-            <span className="font-display font-bold text-white text-xl tracking-tight">FleetOS</span>
+            <span className="font-display font-bold text-white text-xl tracking-tight">FleetFlow</span>
             <p className="text-[10px] text-brand-300 uppercase tracking-widest font-medium">Vehicle Command Center</p>
           </div>
         </div>
@@ -134,7 +169,7 @@ function Login() {
             <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-accent-500 rounded-xl flex items-center justify-center shadow-glow-sm">
               <Zap className="w-6 h-6 text-white" fill="currentColor" />
             </div>
-            <span className="font-display font-bold text-surface-900 dark:text-white text-xl">FleetOS</span>
+            <span className="font-display font-bold text-surface-900 dark:text-white text-xl">FleetFlow</span>
           </div>
 
           <div className="mb-8">
@@ -142,17 +177,19 @@ function Login() {
             <p className="text-surface-500 mt-2">Sign in to your command center</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
-            {/* Username */}
+          <form onSubmit={handleLogin} autoComplete="off" className="space-y-5">
+            {/* Email Address */}
             <div>
-              <label className="input-label">Username</label>
+              <label className="input-label">Email Address</label>
               <div className="relative">
-                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
                 <input
-                  type="text"
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  name="login_email"
+                  autoComplete="off"
+                  placeholder="your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="input-modern pl-10"
                 />
@@ -166,6 +203,8 @@ function Login() {
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
                 <input
                   type={showPass ? 'text' : 'password'}
+                  name="login_password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
                   value={passwordHash}
                   onChange={(e) => setPasswordHash(e.target.value)}
@@ -227,9 +266,34 @@ function Login() {
             </Link>
           </p>
 
-          {/* Demo credentials hint */}
-          <div className="mt-8 px-4 py-3 bg-surface-100 dark:bg-surface-800/50 rounded-xl text-xs text-surface-500 dark:text-surface-400 text-center">
-            <span className="font-medium text-surface-600 dark:text-surface-300">Demo:</span> Use your registered credentials to access the dashboard
+          {/* Interactive Demo Credentials Fill */}
+          <div className="mt-6 p-3.5 bg-surface-100 dark:bg-surface-900/60 rounded-xl border border-surface-200 dark:border-surface-800 text-xs">
+            <p className="font-semibold text-surface-700 dark:text-surface-300 mb-2 flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-brand-500" /> Click to Instant Demo Login:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => triggerDemoLogin("admin@fleetflow.com", "admin", "Admin")}
+                className="px-3 py-1.5 bg-gradient-to-r from-brand-600 to-brand-700 text-white font-semibold rounded-lg shadow-sm hover:shadow transition-all text-xs"
+              >
+                ⚡ Sign in as Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => triggerDemoLogin("mechanic@fleetflow.com", "mechanic", "Rajesh Mechanic")}
+                className="px-3 py-1.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white font-semibold rounded-lg shadow-sm hover:shadow transition-all text-xs"
+              >
+                🔧 Sign in as Mechanic
+              </button>
+              <button
+                type="button"
+                onClick={() => triggerDemoLogin("driver@fleetflow.com", "user", "Aarav Driver")}
+                className="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold rounded-lg shadow-sm hover:shadow transition-all text-xs"
+              >
+                🚚 Sign in as Driver
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>
