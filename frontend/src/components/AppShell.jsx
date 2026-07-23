@@ -6,10 +6,11 @@ import {
   LayoutDashboard, Car, Wrench, FileText,
   Menu, X, Bell, Moon, Sun, Search, LogOut,
   ChevronLeft, Calendar, AlertTriangle, TrendingUp,
-  Zap, Shield, MapPin, Activity, Brain, Map
+  Zap, Shield, MapPin, Activity, Brain, Map, Navigation, Code2
 } from 'lucide-react';
 import CommandPalette from './CommandPalette';
 import RAGChatWidget from './RAGChatWidget';
+import RoleSwitcher from './RoleSwitcher';
 import { useNotifications } from '../context/NotificationContext';
 
 /* ── Theme helper — persists to localStorage + html class ── */
@@ -37,7 +38,7 @@ const SIDEBAR_LOGO = (
       </div>
     </div>
     <div>
-      <span className="font-display font-bold text-white tracking-tight leading-none block text-base">FleetOS</span>
+      <span className="font-display font-bold text-white tracking-tight leading-none block text-base">FleetFlow</span>
       <span className="text-[10px] text-brand-300 font-medium tracking-widest uppercase">Vehicle Command</span>
     </div>
   </div>
@@ -59,9 +60,11 @@ export default function AppShell({ children }) {
 
   const navItems = [
     { name: 'Dashboard',   path: '/dashboard',          icon: LayoutDashboard, section: 'main' },
+    { name: 'Live GPS Map', path: '/live-map',          icon: Navigation,      section: 'main', badge: 'live' },
     { name: 'Vehicles',    path: '/vehicles',            icon: Car,             section: 'main' },
     { name: 'Maintenance', path: '/maintenance',         icon: Wrench,          section: 'main' },
     { name: 'Invoices',    path: '/invoices',            icon: FileText,        section: 'main' },
+    { name: 'API Explorer',path: '/api-docs',            icon: Code2,           section: 'main' },
     { name: 'Booking',     path: '/booking',             icon: Calendar,        section: 'main' },
     { name: 'Reports',     path: '/reports',             icon: TrendingUp,      section: 'main' },
     ...(isAdmin
@@ -208,6 +211,8 @@ export default function AppShell({ children }) {
 
       {/* ── Main Content Area ─────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Recruiter Role Switcher Banner */}
+        <RoleSwitcher />
 
         {/* Top Navbar */}
         <header className="h-16 bg-white/80 dark:bg-surface-900/80 backdrop-blur-xl border-b border-surface-200/80 dark:border-surface-800/50 flex items-center justify-between px-4 lg:px-6 z-10 flex-shrink-0">
@@ -217,7 +222,7 @@ export default function AppShell({ children }) {
             </button>
             <div className="hidden md:flex items-center gap-2 text-sm">
               <Activity className="w-4 h-4 text-brand-500" />
-              <span className="text-surface-400 dark:text-surface-500">FleetOS</span>
+              <span className="text-surface-400 dark:text-surface-500">FleetFlow</span>
               <span className="text-surface-300 dark:text-surface-600">/</span>
               <span className="font-semibold text-surface-700 dark:text-surface-200 capitalize">
                 {location.pathname.slice(1).replace(/-/g, ' ') || 'Dashboard'}
