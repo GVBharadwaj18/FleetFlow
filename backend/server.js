@@ -2,6 +2,7 @@ import connectDB from './config/db.js';
 import app from './src/app.js';
 import http from 'http';
 import { initSocket } from './src/socket.js';
+import { startTelemetryStream } from './src/services/telemetryStream.js';
 
 if (process.env.NODE_ENV !== 'test') {
     connectDB();
@@ -14,7 +15,11 @@ if (process.env.NODE_ENV !== 'test') {
     // Initialize Socket.io
     initSocket(server);
 
+    // Start Telemetry simulation stream
+    startTelemetryStream();
+
     server.listen(PORT, "0.0.0.0", () => {
         console.log(`🚀 Server running on port ${PORT}`);
     });
 }
+
