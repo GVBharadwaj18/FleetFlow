@@ -35,8 +35,8 @@ function makeIcon(color, pulse = false) {
 
 const STATUS_ICONS = {
   Pending:           makeIcon("#f59e0b", true),
-  "Mechanic Assigned": makeIcon("#6438ff"),
-  "On The Way":      makeIcon("#06d3d4", true),
+  "Mechanic Assigned": makeIcon("#8b5cf6"),
+  "On The Way":      makeIcon("#06b6d4", true),
   Completed:         makeIcon("#10b981"),
   Cancelled:         makeIcon("#f43f5e"),
 };
@@ -44,9 +44,9 @@ const STATUS_ICONS = {
 const HEALTH_ICONS = {
   critical: makeIcon("#f43f5e", true),
   high:     makeIcon("#f59e0b", true),
-  medium:   makeIcon("#6438ff"),
-  low:      makeIcon("#10b981"),
-  healthy:  makeIcon("#06d3d4"),
+  medium:   makeIcon("#8b5cf6"),
+  low:      makeIcon("#06b6d4"),
+  healthy:  makeIcon("#10b981"),
 };
 
 function getHealthIcon(risk) {
@@ -70,8 +70,8 @@ function VehicleItem({ vehicle, prediction, onClick, active }) {
       onClick={onClick}
       className={`w-full text-left p-3 rounded-xl transition-all duration-200 border ${
         active
-          ? "bg-brand-500/20 border-brand-400/40"
-          : "bg-surface-900/50 border-surface-800/60 hover:bg-surface-800/60"
+          ? "bg-brand-500/20 border-brand-400/40 text-brand-700 dark:text-brand-300 font-semibold"
+          : "bg-white/80 dark:bg-surface-900/50 border-surface-200 dark:border-surface-800/60 hover:bg-surface-100 dark:hover:bg-surface-800/60 text-surface-800 dark:text-surface-200"
       }`}
     >
       <div className="flex items-center gap-3">
@@ -263,7 +263,7 @@ export default function FleetIntelligence() {
 
             {mapReady && (
               <MapContainer
-                center={[40.7128, -74.006]}
+                center={[12.9716, 77.5946]}
                 zoom={11}
                 style={{ height: "calc(100% - 53px)", width: "100%" }}
                 ref={mapRef}
