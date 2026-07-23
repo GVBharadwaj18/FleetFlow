@@ -1,11 +1,15 @@
 // utils/axiosInstance.js
 import axios from "axios";
 
+const getBaseURL = () => {
+  if (import.meta.env.VITE_BACKEND_URL) return import.meta.env.VITE_BACKEND_URL;
+  return "http://localhost:5000";
+};
+
 const axiosInstance = axios.create({
-  // baseURL: "http://localhost:3000",
-  baseURL: "https://vehicle-management-system-vms.onrender.com", // Backend on Render
+  baseURL: getBaseURL(),
   withCredentials: false,
-  timeout: 60000, // 60s timeout to accommodate Render cold-starts
+  timeout: 8000,
 });
 
 axiosInstance.interceptors.request.use((config) => {

@@ -21,6 +21,9 @@ import AssistanceDashboard from "./pages/roadside/AssistanceDashboard";
 import AssignedJobs from "./pages/roadside/AssignedJobs";
 import PredictiveMaintenance from "./pages/PredictiveMaintenance";
 import FleetIntelligence from "./pages/FleetIntelligence";
+import LiveMap from "./pages/LiveMap";
+import ApiDocs from "./pages/ApiDocs";
+
 function App() {
   return (
     <Routes>
@@ -31,6 +34,22 @@ function App() {
         element={
           <ProtectedRoute>
             <Vehicles />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/live-map"
+        element={
+          <ProtectedRoute>
+            <LiveMap />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/api-docs"
+        element={
+          <ProtectedRoute>
+            <ApiDocs />
           </ProtectedRoute>
         }
       />
@@ -180,3 +199,4 @@ function App() {
 }
 
 export default App;
+

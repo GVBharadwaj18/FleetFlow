@@ -320,8 +320,18 @@ export default function AppShell({ children }) {
               </AnimatePresence>
             </div>
 
+            {/* Sign Out Button in Top Navbar */}
+            <button
+              onClick={logout}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl text-danger-600 dark:text-danger-400 bg-danger-50 dark:bg-danger-500/15 border border-danger-200 dark:border-danger-500/30 hover:bg-danger-100 dark:hover:bg-danger-500/25 transition-all cursor-pointer ml-1"
+              title="Sign Out of FleetFlow"
+            >
+              <LogOut className="w-3.5 h-3.5 text-danger-500" />
+              <span>Sign Out</span>
+            </button>
+
             {/* User Avatar */}
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-white text-xs font-bold shadow-glow-sm cursor-pointer">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-white text-xs font-bold shadow-glow-sm ml-1" title={auth?.user?.username || 'User'}>
               {userInitial}
             </div>
           </div>
