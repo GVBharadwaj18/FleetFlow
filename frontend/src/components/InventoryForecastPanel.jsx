@@ -82,7 +82,7 @@ export default function InventoryForecastPanel({ part }) {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="mt-3 p-4 rounded-xl bg-surface-900/80 border border-brand-500/20 space-y-4">
+            <div className="mt-3 p-4 rounded-xl bg-surface-100 dark:bg-surface-900/80 border border-surface-200 dark:border-brand-500/20 space-y-4">
               {loading && (
                 <div className="flex items-center gap-2 text-surface-400 text-sm py-2">
                   <Brain className="w-4 h-4 animate-pulse text-brand-400" />
@@ -157,8 +157,8 @@ export default function InventoryForecastPanel({ part }) {
                           <Bar dataKey="qty" fill="url(#forecastGrad)" radius={[3, 3, 0, 0]} />
                           <defs>
                             <linearGradient id="forecastGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%"   stopColor="#6438ff" stopOpacity={0.9} />
-                              <stop offset="100%" stopColor="#06d3d4" stopOpacity={0.5} />
+                              <stop offset="0%"   stopColor="#06b6d4" stopOpacity={0.9} />
+                              <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.5} />
                             </linearGradient>
                           </defs>
                         </BarChart>

@@ -394,7 +394,7 @@ export default function Dashboard() {
                     Full Screen <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <MapContainer center={[40.7128, -74.006]} zoom={11} style={{ height: 'calc(100% - 57px)', width: '100%' }}>
+                <MapContainer center={[12.9716, 77.5946]} zoom={12} style={{ height: 'calc(100% - 57px)', width: '100%' }}>
                   <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" attribution='© <a href="https://carto.com/">Carto</a>' />
                   {roadsideRequests.filter(r => r.latitude && r.longitude && r.status !== 'Completed' && r.status !== 'Cancelled').map(req => (
                     <Marker key={req._id} position={[req.latitude, req.longitude]}>
@@ -429,18 +429,18 @@ export default function Dashboard() {
                     <AreaChart data={revenueData} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                       <defs>
                         <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#6438ff" stopOpacity={0.35} />
-                          <stop offset="95%" stopColor="#6438ff" stopOpacity={0} />
+                          <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.35} />
+                          <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(100,100,150,0.15)" />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9090b8', fontSize: 11 }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9090b8', fontSize: 11 }} />
                       <Tooltip
-                        contentStyle={{ background: '#0e0e24', border: '1px solid #303060', borderRadius: 12, color: '#f0f0f8', fontSize: 12 }}
+                        contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: 12, color: '#f8fafc', fontSize: 12 }}
                         formatter={(v) => [`$${v.toLocaleString()}`, 'Revenue']}
                       />
-                      <Area type="monotone" dataKey="revenue" stroke="#6438ff" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad)" />
+                      <Area type="monotone" dataKey="revenue" stroke="#06b6d4" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad)" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>

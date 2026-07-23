@@ -119,7 +119,7 @@ export default function AssistanceDashboard() {
                             </div>
                             <span className="text-xs text-surface-400">{requests.filter(r => r.latitude && r.longitude).length} pins</span>
                         </div>
-                        <MapContainer center={[40.7128, -74.006]} zoom={11} style={{ height: 'calc(100% - 49px)', width: '100%' }}>
+                        <MapContainer center={[12.9716, 77.5946]} zoom={12} style={{ height: 'calc(100% - 49px)', width: '100%' }}>
                             <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" attribution='© <a href="https://carto.com/">Carto</a>' />
                             {requests.filter(r => r.latitude && r.longitude && r.status !== 'Completed' && r.status !== 'Cancelled').map(req => (
                                 <Marker key={req._id} position={[req.latitude, req.longitude]}>

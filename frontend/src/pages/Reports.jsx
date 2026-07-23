@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { TrendingUp, Wrench, Calendar as CalendarIcon, DollarSign, Activity, BarChart2 } from "lucide-react";
 
-const CHART_COLORS = ['#6438ff', '#06d3d4', '#10b981', '#f59e0b', '#f43f5e'];
+const CHART_COLORS = ['#2563eb', '#f97316', '#10b981', '#f59e0b', '#f43f5e'];
 
 function MetricCard({ title, value, icon: Icon, color, unit = '' }) {
   return (
@@ -28,8 +28,8 @@ function MetricCard({ title, value, icon: Icon, color, unit = '' }) {
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-surface-900 dark:bg-surface-800 border border-surface-700 rounded-xl px-4 py-3 shadow-hard text-xs">
-        <p className="text-surface-400 font-medium mb-1">{label}</p>
+      <div className="bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-xl px-4 py-3 shadow-lg text-xs">
+        <p className="text-surface-700 dark:text-surface-300 font-medium mb-1">{label}</p>
         {payload.map((p, i) => (
           <p key={i} className="font-bold" style={{ color: p.color }}>{p.name}: {p.value?.toLocaleString()}</p>
         ))}
@@ -130,15 +130,15 @@ export default function Reports() {
                   <AreaChart data={revenueData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
                     <defs>
                       <linearGradient id="revGrad2" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#6438ff" stopOpacity={0.4} />
-                        <stop offset="95%" stopColor="#6438ff" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
+                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(100,100,150,0.15)" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9090b8', fontSize: 11 }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9090b8', fontSize: 11 }} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Area type="monotone" dataKey="revenue" name="Revenue ($)" stroke="#6438ff" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad2)" />
+                    <Area type="monotone" dataKey="revenue" name="Revenue ($)" stroke="#06b6d4" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad2)" />
                   </AreaChart>
                 </ResponsiveContainer>
               )}
